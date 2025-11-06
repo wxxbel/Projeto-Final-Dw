@@ -90,14 +90,14 @@
                         Email VARCHAR(254) NOT NULL UNIQUE,  
                         CPF CHAR(11) NOT NULL UNIQUE,  
                         Telefone CHAR(11),  
-                        idEndereco INT,
+                        idEndereco INT
                     ); 
 
                     CREATE TABLE Endereco ( 
                         idEndereco INT PRIMARY KEY,  
                         idUsuario INT,  
                         Logradouro VARCHAR(255) NOT NULL,  
-                        Número VARCHAR(255) NOT NULL,  
+                        Numero VARCHAR(255) NOT NULL,  
                         Bairro VARCHAR(255),  
                         Cidade VARCHAR(255),  
                         Estado VARCHAR(255),  
@@ -118,30 +118,30 @@
 
                     CREATE TABLE Comentario ( 
                         idComentario INT PRIMARY KEY,  
-                        Texto VARCHAR NOT NULL,  
+                        Texto VARCHAR(255) NOT NULL,  
                         idCanal INT,  
                         idAutor INT,  
-                        FOREIGN KEY(idCanal) REFERENCES Canal (idCanal)
+                        FOREIGN KEY(idCanal) REFERENCES Canal (idCanal),
                         FOREIGN KEY(idAutor) REFERENCES Usuario (idUsuario)
                     ); 
 
                     CREATE TABLE LikeCanal ( 
                         idUsuario INT,  
                         idCanal INT,  
-                        Dislike BOOLEAN DEFAULT FALSE 
+                        Dislike BOOLEAN DEFAULT FALSE,
 
-                        FOREIGN KEY(idCanal) REFERENCES Canal (idCanal)
-                        FOREIGN KEY(idUsuario) REFERENCES Usuario (idUsuario)
+                        FOREIGN KEY(idCanal) REFERENCES Canal (idCanal),
+                        FOREIGN KEY(idUsuario) REFERENCES Usuario (idUsuario),
                         PRIMARY KEY(idUsuario, idCanal)
                     ); 
 
                     CREATE TABLE LikeComentario ( 
                         idUsuario INT,  
                         idComentario INT,
-                        Dislike BOOLEAN DEFAULT FALSE  
+                        Dislike BOOLEAN DEFAULT FALSE,
                         
-                        FOREIGN KEY(idComentario) REFERENCES Comentario (idComentario)
-                        FOREIGN KEY(idUsuario) REFERENCES Usuario (idUsuario)
+                        FOREIGN KEY(idComentario) REFERENCES Comentario (idComentario),
+                        FOREIGN KEY(idUsuario) REFERENCES Usuario (idUsuario),
                         PRIMARY KEY(idUsuario, idComentario)
                     );"; 
 
