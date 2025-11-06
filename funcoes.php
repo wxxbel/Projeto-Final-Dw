@@ -3,9 +3,11 @@
         $nome_servidor = "127.0.0.1";
         $nome_user = "root";
         $senha = "";
-        $nome_bd = "bancodedados";
+        $nome_bd = "RedeSocial";
 
-        return mysqli_connect($nome_servidor, $nome_user, $senha);
+        $conexao = mysqli_connect($nome_servidor, $nome_user, $senha);
+        $resultado_query = mysqli_query($conexao, "USE " . $nome_bd);
+        return $conexao;
     }
 
     // Código original de https://stackoverflow.com/questions/1354999/keep-me-logged-in-the-best-approach
@@ -71,9 +73,11 @@
         $nome_user = "root";
         $senha = "";
         $nome_bd = "RedeSocial";        
+        
+        $conexao = mysqli_connect($nome_servidor, $nome_user, $senha);
 
         $comando = "CREATE DATABASE IF NOT EXISTS " . $nome_bd;
-        $resultado_query=mysqli_query($conexao, $comando);
+        $resultado_query = mysqli_query($conexao, $comando);
 
         $comando="USE " . $nome_bd;
         $resultado_query = mysqli_query($conexao, $comando);
