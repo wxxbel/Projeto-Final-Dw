@@ -20,5 +20,5 @@
         $comando = "INSERT INTO Usuario (Nome, Salt, Senha_hash, Email)  VALUES ('" . $nome . "', '" . $salt . "', '" . $criptografada . "', '" . $email . "')";
         $resultado_query = mysqli_query($conexao, $comando) or header("Location: login.php");
     }
-    header('pagina registro.php');
+    header('/paginas/registro.php');
 ?>

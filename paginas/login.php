@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href=".vs\estilo\style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-    <?php 
-        require_once 'funcoes.php';
+    <?php
         session_start();
         if (isset($_SESSION["erro_login"])) {
             echo $_SESSION["erro_login"];
@@ -17,7 +16,7 @@
         }
     ?>
 
-    <form method="POST" action="logar.php" class="form">
+    <form method="POST" action="/backend/logar.php" class="form">
         <h1>LOGIN</h1>
         <p class="email">Email:</p> <input name="email" required class="name"> <br>
         <br>

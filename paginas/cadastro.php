@@ -14,14 +14,14 @@
         }
     ?>
 
-    <form method="POST" action="registrar.php">
+    <form method="POST" action="/backend/registrar.php">
         Nome Completo*: <input name="nome" required> <br>
         CPF*: <input name="cpf" required> <br>
         Email*: <input name="email" type="email" required> <br>
         Senha*: <input name="senha" type="password" required> <br>
         Repita a senha*: <input name="senha_novamente" type="password" required> <br>
         <button name="botao" type="submit" value="logar">Registrar</button>
-        <a href="pagina login.php">Já tem uma conta? <strong>Clique aqui!</strong></a>
+        <a href="login.php">Já tem uma conta? <strong>Clique aqui!</strong></a>
     </form>
     
 </body>

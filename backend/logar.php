@@ -16,21 +16,21 @@
 
         // Pega o usuário no banco de dados
         $comando = "SELECT * FROM Usuario  WHERE Email = '" . $usuario . "'";
-        $resultado_query = mysqli_query($conexao, $comando) or header("Location: login.php");
+        $resultado_query = mysqli_query($conexao, $comando) or header("/paginas/login.php");
         if (mysqli_num_rows($resultado_query) < 1) {
             $_SESSION["erro_login"] = "Email ou senha incorretos";
-            header("Location: login.php");
+            header("/paginas/login.php");
         }
 
         $usuario_salvo = mysqli_fetch_assoc($resultado_query);
         if (validar_senha($usuario_salvo["idUsuario"], $senha)){
             $_SESSION['usuario'] = $usuario_salvo["nome"];
-            header("Location: menu.php");
+            header("/paginas/menu.php");
             exit();
         }
         else{
             $_SESSION["erro_login"] = "Email ou senha incorretos";
-            header("Location: login.php");
+            header("/paginas/login.php");
         }
     }
 ?>
