@@ -52,7 +52,7 @@
 
             <div class = "cadastro-link">
                 <p>Não possui uma conta?
-                <a href="cadastro.php" class="link"><strong>Cadastrar</strong></a>
+                <a href="cadastro" class="link"><strong>Cadastrar</strong></a>
                 </p>
             </div>
         </form>

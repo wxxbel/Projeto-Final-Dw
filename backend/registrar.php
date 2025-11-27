@@ -19,16 +19,18 @@
 
         } catch (Exception $e) {
             error_log('Erro no request, campos obrigatórios não foram preenchidos');
-            header('pagina registro.php');
+            header('Location: /cadastro');
+            exit();
         }
         $conexao = conectar_bd();
 
         $salt = random_bytes(32);
         $criptografada = openssl_pbkdf2($senha, $salt, 32, 600000, 'SHA256');
-        $comandoUsuario = "INSERT INTO Usuario (Nome, Salt, Senha_hash, Email, Telefone )  VALUES ('" . $nome . "', '" . $salt . "', '" . $criptografada . "', '" . $email . "' '" . $telefone . "')";
+        $comandoUsuario = "INSERT INTO Usuario (idTipoUsuario, Nome, Salt, Senha_hash, Email, Telefone )  VALUES (1, '" . $nome . "', '" . $salt . "', '" . $criptografada . "', '" . $email . "' '" . $telefone . "')";
         $resultado_query_usuario = mysqli_query($conexao, $comandoUsuario) or header("Location: login.php");
         $comandoEndereco = "INSERT INTO Endereco (idUsuario, Logradouro, Numero, Bairro, Cidade, Estado, CEP) VALUES (LAST_INSERT_ID(), '" . $logradouro . "', '" . $numero . "', '" . $bairro . "', '" . $cidade . "', '" . $estado . "', '" . $cep . "')";        
         $resultado_query_endereco = mysqli_query($conexao, $comandoEndereco) or header("Location: login.php");
     }
-    header('/paginas/registro.php');
+    header('Location: /cadastro');
+    exit();
 ?>
