@@ -25,7 +25,7 @@
         $usuario_salvo = mysqli_fetch_assoc($resultado_query);
         if (validar_senha($usuario_salvo["idUsuario"], $senha)){
             $_SESSION['usuario'] = $usuario_salvo["nome"];
-            header("../paginas/menu.php");
+            header("../paginas/principal.php");
             exit();
         }
         else{
