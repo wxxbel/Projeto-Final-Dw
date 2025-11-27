@@ -32,10 +32,12 @@
         case FastRoute\Dispatcher::FOUND:
             $handler = $routeInfo[1];
             $vars = $routeInfo[2];
-            
+            $id_usuario = checar_login();                   
+            $id_meu_canal = idUsuario_para_idCanal($id_usuario);
+
             switch ($handler) {
                 case "get_tela_principal":
-                    if (checar_login()) {
+                    if ($id_usuario > 0) {
                         require 'paginas/principal.php';
                         break;
                     } else {
@@ -50,8 +52,12 @@
                     require 'paginas/cadastro.php';
                     break;
                 case "get_tela_canal":
-                    if (checar_login()) {
-                        require 'paginas/canal.php';
+                    
+                    if ($id_usuario > 0) { 
+                        if ($id_meu_canal !== $vars["id"]) 
+                            {require 'paginas/canal.php';}
+                        else 
+                            {require 'paginas/canal_edicao.php';}
                         break;
                     } else {
                         header('Location: /login');
