@@ -12,7 +12,7 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('img_background_certa.jpg') no-repeat;
+    background: url('../imagens/fundos/arvore.jpg') no-repeat;
     background-size: cover;
     background-position: center;
 }

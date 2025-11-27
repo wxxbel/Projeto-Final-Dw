@@ -16,7 +16,7 @@ body{
     min-height: 100vh;
 
     /*config do background*/
-    background: url('img_background_certa.jpg') no-repeat;
+    background: url('../imagens/fundos/arvore.jpg') no-repeat;
     background-size: cover;
     background-position: center;
 }
