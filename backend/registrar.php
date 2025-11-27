@@ -11,14 +11,16 @@
             $senha_novamente = htmlspecialchars($_POST["senha_novamente"]);
         } catch (Exception $e) {
             error_log('Erro no request, campos obrigatórios não foram preenchidos');
-            header('pagina registro.php');
+            header('Location: /cadastro');
+            exit();
         }
         $conexao = conectar_bd();
 
         $salt = random_bytes(32);
         $criptografada = openssl_pbkdf2($senha, $salt, 32, 600000, 'SHA256');
-        $comando = "INSERT INTO Usuario (Nome, Salt, Senha_hash, Email)  VALUES ('" . $nome . "', '" . $salt . "', '" . $criptografada . "', '" . $email . "')";
-        $resultado_query = mysqli_query($conexao, $comando) or header("Location: login.php");
+        $comando = "INSERT INTO Usuario (idTipoUsuario, Nome, Salt, Senha_hash, Email)  VALUES (1, '" . $nome . "', '" . $salt . "', '" . $criptografada . "', '" . $email . "')";
+        $resultado_query = mysqli_query($conexao, $comando) or header('Location: /cadastro');
     }
-    header('/paginas/registro.php');
+    header('Location: /cadastro');
+    exit();
 ?>

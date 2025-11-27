@@ -51,7 +51,7 @@
 
             <div class="conta-link">
                 <p>Já tem uma conta?
-                <a href="login.php">Clique aqui!</a></p>
+                <a href="login">Clique aqui!</a></p>
             </div>
         </form>
     </div>
