@@ -30,9 +30,12 @@
     }
 
     function checar_login() {
+        // Retorna o id ligado ao usuário
+        // Retorna -1 se não tem o cookie com o token
+        // Retorna -2 se não tem tokens para esse idUsuario
+        // Retorna 0 se não o token não corresponde a nenhum token salvo 
         $cookie = isset($_COOKIE['rememberme']) ? $_COOKIE['rememberme'] : '';
-        // Retorna falso se não tem o cookie com o token
-        if (!$cookie) {return false;}
+        if (!$cookie) {return -2;}
         
         list ($id_usuario, $token) = explode(':', $cookie);
         
@@ -40,7 +43,8 @@
         $conexao = conectar_bd();
         $comando = "SELECT IpCliente, DATEDIFF(Validade, '" . date('Y-m-d') . "') as DiasAteVencimento, DATEDIFF(Validade, DataEmissao) as TemVencimento, Salt, Token_hash from TokensUsuario WHERE idUsuario = '" . $id_usuario . "';";
         $resultado_query = mysqli_query($conexao, $comando);
-        if (mysqli_num_rows($resultado_query) === 0) {return false;}
+        // Checa se há tokens
+        if (mysqli_num_rows($resultado_query) === 0) {return -1;}
         
         while ($obj_token = mysqli_fetch_assoc($resultado_query)) {
             // Se o token não tem mais dias até o vencimento, pula o token
@@ -50,10 +54,10 @@
             if ($obj_token["IpCliente"] !== $_SERVER['REMOTE_ADDR']) {continue;}
             // Checa se os tokens batem
             $token_hash = openssl_pbkdf2($token, $obj_token["Salt"], 32, 600000, 'SHA256');
-            if ($token_hash === $obj_token["Token_hash"]) {return true;}
+            if ($token_hash === $obj_token["Token_hash"]) {return $id_usuario;}
         }
         // Se nenhum token válido foi encontrado, retorna falso
-        return false;
+        return 0;
     }
     
     function validar_senha($id_usuario, $senha){
@@ -86,6 +90,20 @@
 
         }
     }
+
+    function idUsuario_para_idCanal($id_usuario) {
+        // Se nenhum token válido foi encontrado, retorna 0
+        $conexao = conectar_bd();
+        $comando = "SELECT idCanal FROM Canal WHERE idUsuario = '" . $id_usuario . "';";
+        $resultado_query = mysqli_query($conexao, $comando);
+        if (mysqli_num_rows($resultado_query) === 0) {return 0;}
+        
+        while ($canal = mysqli_fetch_assoc($resultado_query)) {
+            return $canal["idCanal"];
+        }
+        return 0;
+    }
+    
     
     function criar_banco() {
         $nome_servidor = "127.0.0.1";
