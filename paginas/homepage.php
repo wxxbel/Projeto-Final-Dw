@@ -17,6 +17,26 @@
 
             <!-- layout da barra lateral esquerda -->
             <div class="layout__left-sidebar">
+                <img src="imagens/svg/tree-2-svgrepo-com.svg" class="brand">
+
+                <!-- Barra lateral menu -->
+                <div class="sidebar-menu">
+
+                    <div class="sidebar-menu__item sidebar-menu__item--ativo">
+                        <img src="./svg/home" class="sidebar-menu__item-icon"/>
+                        Home
+                    </div>
+
+                    <div class="sidebar-menu__item sidebar-menu__item--ativo">
+                        <img src="./svg/profile.svg" class="sidebar-menu__item-icon"/>
+                        Perfil
+                    </div>
+
+                    <div class="sidebar-menu__item sidebar-menu__item--ativo">
+                        <img src="./svg/explore.svg" class="sidebar-menu__item-icon"/>
+                        Explorar
+                    </div>
+                </div>
 
             </div>
 
