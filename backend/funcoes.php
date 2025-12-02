@@ -165,7 +165,7 @@
                     CREATE TABLE Canal ( 
                         idCanal INT PRIMARY KEY AUTO_INCREMENT,  
                         Nome VARCHAR(255),  
-                        Bio VARCHAR(2048) DEFAULT "",  
+                        Bio VARCHAR(2048) DEFAULT \"\",  
                         Caminho_foto VARCHAR(255),  
                         Caminho_banner VARCHAR(255),  
                         idUsuario INT,  
@@ -206,9 +206,9 @@
 
                     INSERT INTO TipoUsuario (idTipoUsuario, Nome) 
                     VALUES
-                        (1, "Comum"),
-                        (2, "Moderador"),
-                        (3, "Administrador");"; 
+                        (1, \"Comum\"),
+                        (2, \"Moderador\"),
+                        (3, \"Administrador\");"; 
 
         $resultado_query=mysqli_query($conexao, $comando);
     }
