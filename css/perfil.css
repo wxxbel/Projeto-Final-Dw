@@ -1,0 +1,48 @@
+body {
+padding: 20px;
+border-radius: 14px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.comentario {
+padding: 15px;
+border-bottom: 1px solid #3a7a4a;
+}
+
+.comentario:last-child {
+border-bottom: none;
+}
+
+.comentario h3 {
+font-size: 18px;
+margin: 0;
+color: #dcefd8;
+}
+
+.comentario p {
+margin: 5px 0 0;
+color: #c7eccc;
+}
+
+.reacoes {
+margin-top: 10px;
+display: flex;
+gap: 12px;
+align-items: center;
+}
+
+.reacoes button {
+background: #1f4d2b;
+border: 2px solid #3a7a4a;
+padding: 8px 12px;
+border-radius: 10px;
+cursor: pointer;
+font-size: 14px;
+color: #dcefd8;
+transition: 0.2s ease;
+}
+
+.reacoes button:hover {
+background-color: #3a7a4a;
+color: white;
+}
