@@ -7,6 +7,7 @@
         $r->addRoute('GET', '/', 'get_tela_principal');
         $r->addRoute('GET', '/login', 'get_tela_login');
         $r->addRoute('GET', '/cadastro', 'get_tela_cadastro');
+        $r->addRoute('GET', '/admin', 'get_tela_admin');
 
         $r->addRoute('GET', '/canal/{id:\d+}', 'get_tela_canal');
     });
@@ -21,12 +22,12 @@
     $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
     switch ($routeInfo[0]) {
         case FastRoute\Dispatcher::NOT_FOUND:
-            // ... 404 Not Found
+            // ... 404 Página não encontrada
             echo "404";
             break;
         case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
             $allowedMethods = $routeInfo[1];
-            // ... 405 Method Not Allowed
+            // ... 405 Método não permitido
             echo "405";
             break;
         case FastRoute\Dispatcher::FOUND:
@@ -38,7 +39,7 @@
             switch ($handler) {
                 case "get_tela_principal":
                     if ($id_usuario > 0) {
-                        require 'paginas/principal.php';
+                        require 'paginas/homepage.php';
                         break;
                     } else {
                         header('Location: /login');
@@ -47,6 +48,9 @@
                     break;
                 case "get_tela_login":
                     require 'paginas/login.php';
+                    break;
+                case "get_tela_admin":
+                    require 'paginas/admin.php';
                     break;
                 case "get_tela_cadastro":
                     require 'paginas/cadastro.php';
