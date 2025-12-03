@@ -11,18 +11,25 @@
     }
 
     function gerar_token_login($id_usuario, $lembrar) {
+        // Gera o token
         $token = random_bytes(32);
+        // Gera o salt pro hash
         $salt = random_bytes(32);
+        // Cria o hash
         $token_hash = openssl_pbkdf2($token, $salt, 32, 600000, 'SHA256');
+
         // Por padrão vale por 30 dias após gerado
+        // segundos*minutos*horas*dias
         $validade = time()+60*60*24*30;
         if (!$lembrar) {$validade = time();}
         
+        // Insere no banco de dados o hash do token criado
         $conexao = conectar_bd();
         $comando = "INSERT INTO TokensUsuario (idUsuario, IpCliente, DataEmissao, Salt, Token_hash, Validade)  
                         VALUES ('" . $id_usuario . "', '" . $_SERVER['REMOTE_ADDR'] . "', '" . date('Y-m-d') . "', '" . mysqli_real_escape_string($conexao, $salt) . "', '" . mysqli_real_escape_string($conexao, $token_hash) . "', '" . date('Y-m-d', $validade) . "')";
         $resultado_query = mysqli_query($conexao, $comando);
         
+        // Salva nos cookies o token
         $cookie = $id_usuario . ':' . $token;
         if (!$lembrar) {$validade = 0;}
         setcookie('rememberme', $cookie, time()+60*60*24*7, "/");
@@ -41,15 +48,18 @@
         
         // Puxa os tokens do usuário, se não encontrar nenhum, retorna falso
         $conexao = conectar_bd();
-        $comando = "SELECT IpCliente, DATEDIFF(Validade, '" . date('Y-m-d') . "') as DiasAteVencimento, DATEDIFF(Validade, DataEmissao) as TemVencimento, Salt, Token_hash from TokensUsuario WHERE idUsuario = '" . $id_usuario . "';";
+        $comando = "SELECT idTokensUsuario, IpCliente, DATEDIFF(Validade, '" . date('Y-m-d') . "') as DiasAteVencimento, DATEDIFF(Validade, DataEmissao) as TemVencimento, Salt, Token_hash from TokensUsuario WHERE idUsuario = '" . $id_usuario . "';";
         $resultado_query = mysqli_query($conexao, $comando);
         // Checa se há tokens
         if (mysqli_num_rows($resultado_query) === 0) {return -1;}
         
         while ($obj_token = mysqli_fetch_assoc($resultado_query)) {
             // Se o token não tem mais dias até o vencimento, pula o token
-            // TODO Remover do banco de dados os tokens que já venceram
-            if ($obj_token["DiasAteVencimento"] < 0 and $obj_token["TemVencimento"] !== 0) {continue;}
+            if ($obj_token["DiasAteVencimento"] < 0 and $obj_token["TemVencimento"] !== 0) {
+                $comandoRemocao = "DELETE FROM TokensUsuario WHERE idTokensUsuario = " . $obj_token["idTokensUsuario"] . ";";        
+                $resultado_query_remocao = mysqli_query($conexao, $comandoRemocao);
+                continue;
+            }
             // Se o ip da máquina não bate com o ip do token, pula esse token
             if ($obj_token["IpCliente"] !== $_SERVER['REMOTE_ADDR']) {continue;}
             // Checa se os tokens batem
@@ -72,11 +82,15 @@
     } 
 
     function guardar_senha($user, $senha) {
+        // Gera o salt pro hash
         $salt = random_bytes(32);
+        // Gera o hash da senha
         $criptografada = openssl_pbkdf2($senha, $salt, 32, 600000, 'SHA256');
+        // Coloca a nova senha no banco de dados
         $conexao = conectar_bd();
         $comando = "UPDATE Usuario SET Senha_hash = '" . $criptografada . "', Salt= '" . $salt . "' WHERE idUsuario = '" . $user . "';";
         $resultado_query = mysqli_query($conexao, $comando);
+        // Retorna falso se não conseguiu salvar
         if (!$resultado_query) {
             error_log('Erro ao tentar salvar senha do usuário ' . $user . ': ' . mysqli_error($conexao));
             return false;
@@ -84,10 +98,25 @@
         return true;
     }
     
-    function dar_like($id, $tipo, $dislike = false) {
-        
+    // TODO Função dar_like
+    function dar_like($idUsuario, $idAlvo, $tipo, $dislike = false) {
         if ($tipo == "perfil" and $tipo != "comentario" ) {
+            ;
+        }
+    }
 
+    function remover_like($idUsuario, $idAlvo, $tipo) {
+        if ($tipo == "comentario") {
+            $comandoRemocao = "DELETE FROM LikeComentario WHERE idUsuario = " . $idUsuario . " AND idComentario = " . $idAlvo . ";";        
+        } else {
+            $comandoRemocao = "DELETE FROM LikeCanal WHERE idUsuario = " . $idUsuario . " AND idCanal = " . $idAlvo . ";";        
+        }
+        $conexao = conectar_bd();
+        try {
+            $resultado_query_remocao = mysqli_query($conexao, $comandoRemocao);
+        // TODO Colocar uma exceção mais especifica
+        } catch (Exception $e) {
+            ;
         }
     }
 
